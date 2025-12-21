@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class VersionNumber : Comparable, Hashable, Codable, Sendable {
+public final class VersionNumber : Comparable, Hashable, Codable, Sendable {
     public static let VERSION_NO_PATTERN      = /([1-9]\d*)((u(\d+))|(\.?(\d+)?\.?(\d+)?\.?(\d+)?\.?(\d+)?\.(\d+)))?(([_b])(\d+))?(((\+|\-)([a-zA-Z0-9_]+))?((\+|\-)([a-zA-Z0-9_]+))?)?/
     public static let BUILD_PATTERN           = /\d+/
     public static let BUILD_NUMBER_PATTERN    = /\+?([bB])([0-9]+)/
@@ -62,12 +62,6 @@ final class VersionNumber : Comparable, Hashable, Codable, Sendable {
         self.releaseStatus = releaseStatus == nil                  ? nil : releaseStatus!
     }
     
-    
-    public func getMajorVersion() -> MajorVersion {
-        return MajorVersion(majorVersion: self.feature!, termOfSupport: Helper.getTermOfSupport(versionNumber: self), maintained: true, earlyAccessOnly: false, releaseStatus: self.releaseStatus!, versions: [])
-    }
-    
-
     public func compareTo(otherVersionNumber: VersionNumber) -> Int {
         let equal       : Int = 0
         let smallerThan : Int = -1

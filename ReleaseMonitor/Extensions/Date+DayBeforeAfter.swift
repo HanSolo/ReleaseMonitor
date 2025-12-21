@@ -24,8 +24,16 @@ extension Date {
         return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
     }
     
+    var day: Int {
+        return Calendar.current.component(.day, from: self)
+    }
+    
     var month: Int {
         return Calendar.current.component(.month,  from: self)
+    }
+    
+    var year: Int {
+        return Calendar.current.component(.year,   from: self)
     }
     
     var isLastDayOfMonth: Bool {

@@ -16,6 +16,12 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .task {
+            let upcomingReleases : [UpcomingReleases] = await RestController.fetchUpcomingReleases()
+            for upcomingRelease in upcomingReleases {
+                debugPrint(upcomingRelease)
+            }
+        }
     }
 }
 
