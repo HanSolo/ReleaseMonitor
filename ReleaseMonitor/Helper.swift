@@ -39,6 +39,32 @@ public struct Helper {
         return upcomingReleases
     }
     
+    static func parseDistributionsJSONEntries(data: Data) -> [Distribution]? {
+        var distributions     : [Distribution]    = []
+        let distributionData : DistributionData = try! JSONDecoder().decode(DistributionData.self, from: data)
+        if let results : [Distribution] = distributionData.result {
+            distributions = results
+        }
+        return distributions
+    }
+    
+    static func parseMarketPlaceReleaseJSONEntries(data: Data) -> VersionNumber? {
+        do {
+            let jsonString : String = String(data: data, encoding: .utf8)!
+            let jsonData   : Data   = Data(jsonString.utf8)
+            if let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [Any] {
+                guard let releaseObject  : [String: Any] = json.first as? [String: Any] else { return nil }
+                guard let versionObject  : [String: Any] = releaseObject["version"] as? [String: Any] else { return nil }
+                guard let openjdkVersion : String        = versionObject["openjdk_version"] as? String else { return nil }
+                let versionNumber : VersionNumber = VersionNumber.fromText(text: openjdkVersion)
+                return versionNumber
+            }
+        } catch {
+            debugPrint("Error parsong json")
+        }
+        return nil
+    }
+    
     public static func index(of text: String, in source: String) -> Int? {
         for (index, _) in source.enumerated() {
             var found = true

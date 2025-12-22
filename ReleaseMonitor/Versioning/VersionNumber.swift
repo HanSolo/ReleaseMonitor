@@ -62,6 +62,17 @@ public final class VersionNumber : Comparable, Hashable, Codable, Sendable {
         self.releaseStatus = releaseStatus == nil                  ? nil : releaseStatus!
     }
     
+    public func update(versionNumber: VersionNumber) -> Void {
+        self.feature       = versionNumber.feature
+        self.interim       = versionNumber.interim
+        self.update        = versionNumber.update
+        self.patch         = versionNumber.patch
+        self.fifth         = versionNumber.fifth
+        self.sixth         = versionNumber.sixth
+        self.build         = versionNumber.build
+        self.releaseStatus = versionNumber.releaseStatus
+    }
+    
     public func compareTo(otherVersionNumber: VersionNumber) -> Int {
         let equal       : Int = 0
         let smallerThan : Int = -1

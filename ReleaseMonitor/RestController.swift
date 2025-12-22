@@ -86,4 +86,51 @@ class RestController {
         }
         return upcomingReleases
     }
+    
+    public static func fetchDistributions() async -> [Distribution] {
+        let sessionConfig : URLSessionConfiguration = URLSessionConfiguration.default
+        sessionConfig.timeoutIntervalForRequest  = Constants.REQUEST_TIMEOUT
+        sessionConfig.timeoutIntervalForResource = Constants.RESOURCE_TIMEOUT
+        
+        let urlString : String      = Constants.DISCO_LATEST_VERSION_URL
+        let session   : URLSession  = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
+        let finalUrl  : URL         = URL(string: urlString)!
+        var request   : URLRequest  = URLRequest(url: finalUrl)
+        request.httpMethod = "GET"
+        var distributions : [Distribution] = []
+        do {
+            let data = try await session.data(with: request)
+            let distributionsFromDisco = Helper.parseDistributionsJSONEntries(data: data)
+            if nil == distributionsFromDisco {
+                os_log("fetchDistrosLatestVersions -> distributionsFromDisco == nil", log: LOG, type: .error)
+            } else if distributionsFromDisco?.isEmpty ?? true {
+                os_log("fetchDistrosLatestVersions -> distributionsFromDisco == empty", log: LOG, type: .error)
+            } else {
+                distributions = distributionsFromDisco!
+            }
+        } catch {
+            os_log("Error fetching distributions", log: LOG, type: .error)
+        }
+        return distributions
+    }
+    
+    public static func fetchLatestReleasesFromMarketPlace(vendor: String) async -> VersionNumber? {
+        let sessionConfig : URLSessionConfiguration = URLSessionConfiguration.default
+        sessionConfig.timeoutIntervalForRequest  = Constants.REQUEST_TIMEOUT
+        sessionConfig.timeoutIntervalForResource = Constants.RESOURCE_TIMEOUT
+        
+        let urlString : String      = Constants.MARKETPLACE_LATEST_API_URL + vendor
+        let session   : URLSession  = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
+        let finalUrl  : URL         = URL(string: urlString)!
+        var request   : URLRequest  = URLRequest(url: finalUrl)        
+        request.httpMethod = "GET"
+        
+        do {            
+            let jsonData = try await session.data(with: request)
+            return Helper.parseMarketPlaceReleaseJSONEntries(data: jsonData)
+        } catch {
+            os_log("Error fetching releases from marketplace", log: LOG, type: .error)
+        }
+        return nil
+    }
 }

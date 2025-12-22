@@ -40,12 +40,7 @@ public struct Constants {
                                                                               "ibm"       : "Semeru",
                                                                               "microsoft" : "Microsoft",
                                                                               "redhat"    : "RedHat"]
-    public static var LATEST_ON_MARKETPLACE       : [String:VersionNumber] = ["Temurin"    : VersionNumber(feature: 1),
-                                                                              "Dragonwell" : VersionNumber(feature: 1),
-                                                                              "Zulu"       : VersionNumber(feature: 1),
-                                                                              "Semeru"     : VersionNumber(feature: 1),
-                                                                              "Microsoft"  : VersionNumber(feature: 1),
-                                                                              "RedHat"     : VersionNumber(feature: 1)]
+    public static let VENDOR_NAMES                : [String]               = ["Dragonwell", "Microsoft", "RedHat", "Semeru", "Temurin", "Zulu"]
     public static var UPDATES                     : [String:Update]        = ["corretto"          : Update.init(distribution: Distribution(uiString: "Corretto",     apiString: "coretto",           latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
                                                                               "graalvm_community" : Update.init(distribution: Distribution(uiString: "GraalVM CE",   apiString: "graalvm_community", latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
                                                                               "liberica"          : Update.init(distribution: Distribution(uiString: "Liberica",     apiString: "liberica",          latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
