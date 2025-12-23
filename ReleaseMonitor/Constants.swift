@@ -19,7 +19,7 @@ public struct Constants {
     
     public static let DISCO_API_BASE_URL          : String                 = "https://api.foojay.io/disco/v3.0/"
     public static let DISCO_UPCOMING_RELEASES_URL : String                 = "\(DISCO_API_BASE_URL)upcoming_releases"
-    public static let DISCO_LATEST_VERSION_URL    : String                 = "\(DISCO_API_BASE_URL)distributions/versions/latest?distribution=corretto,graalvm_community,liberica,liberica_native,microsoft,oracle_open_jdk,sap_machine,semeru,temurin,zulu&include_ea=true"
+    public static let DISCO_LATEST_VERSION_URL    : String                 = "\(DISCO_API_BASE_URL)distributions/versions/latest?distribution=bisheng,corretto,dragonwell,graalvm,graalvm_community,liberica,liberica_native,microsoft,openlogic,oracle_open_jdk,oracle,sap_machine,semeru,temurin,zulu&include_ea=true"
     public static let MARKETPLACE_LATEST_API_URL  : String                 = "https://marketplace-api.adoptium.net/v1/assets/latestForVendors?vendor="
     public static let DISCO_API_STATE_URL         : String                 = "\(DISCO_API_BASE_URL)state"
     public static let AZUL_BLUE                   : Color                  = Color.init(hex: "#152241")

@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct ReleaseMonitorApp: App {
+    
+    @State var model : ReleaseModel = ReleaseModel.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(self.model)
         }
     }
 }
