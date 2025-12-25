@@ -68,7 +68,27 @@ struct JDKView: View {
                         }
                     }
                 }
-                                                
+                      
+                Spacer()
+                Text("OFFLINE")
+                    .font(.system(size: 20))
+                    .padding(EdgeInsets(top: 4, leading: 10, bottom: 4, trailing: 10))
+                    .foregroundStyle(.white)
+                    .background(
+                        ZStack {
+                            RoundedRectangle(
+                                cornerRadius: 20,
+                                style       : .continuous
+                            )
+                            .fill(.red)
+                            RoundedRectangle(
+                                cornerRadius: 20,
+                                style       : .continuous
+                            )
+                            .stroke(.red, lineWidth: 1)
+                        }
+                    )
+                    .opacity(self.model.networkMonitor.isOnline ? 0.0 : 1.0)
                 Spacer()
                 
                 Button(action: {
@@ -80,7 +100,7 @@ struct JDKView: View {
                     }
                 })
                 .buttonStyle(.bordered)
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 70, trailing: 0))
             }
             .padding()
         }

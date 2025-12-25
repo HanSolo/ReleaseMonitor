@@ -8,22 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(ReleaseModel.self) var model : ReleaseModel
+    @Environment(ReleaseModel.self) private var model : ReleaseModel
     
     
-    var body: some View {
+    var body: some View {        
         TabView {
-            
-            Tab("JDK", systemImage: "house") {
+            //Tab("JDK", image: "jdk") {
+            Tab {
                 JDKView()
             }
-            Tab("Disco API", image: "disco") {
+            
+            //Tab("Disco API", image: "disco") {
+            Tab {
                 DiscoView()
             }
-            Tab("MarketPlace", image: "marketplace") {
+            .disabled(!self.model.networkMonitor.isOnline)
+            
+            //Tab("MarketPlace", image: "marketplace") {
+            Tab {
                 MarketPlaceView()
             }
-        }                
+            .disabled(!self.model.networkMonitor.isOnline)
+        }
+        .tabViewStyle(.page(indexDisplayMode: .always))
+        .background(Constants.AZUL_BLUE)
         .task {
             self.model.update()
         }

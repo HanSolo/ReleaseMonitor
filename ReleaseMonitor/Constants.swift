@@ -33,6 +33,13 @@ public struct Constants {
         formatter.timeZone   = .autoupdatingCurrent
         return formatter
     }()
+    public static let DF_ISO                      : DateFormatter          = {
+        let formatter : DateFormatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateStyle  = .short
+        formatter.timeZone   = .autoupdatingCurrent
+        return formatter
+    }()
     public static let INITIAL_DATE_TIME           : Date                   = Date.now
     public static let MARKETPLACE_VENDORS         : [String:String]        = ["adoptium"  : "Temurin",
                                                                               "alibaba"   : "Dragonwell",
@@ -51,6 +58,8 @@ public struct Constants {
                                                                               "semeru"            : Update.init(distribution: Distribution(uiString: "Semeru",       apiString: "semeru",            latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
                                                                               "temurin"           : Update.init(distribution: Distribution(uiString: "Temurin",      apiString: "temurin",           latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
                                                                               "zulu"              : Update.init(distribution: Distribution(uiString: "Zulu",         apiString: "graalvm_community", latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME)]
+    public static let JDK_23_RELEASE_DATE         : Date                   = Date.init(timeIntervalSince1970: 1726531200)
+    public static let JDK_24_RELEASE_DATE         : Date                   = Date.init(timeIntervalSince1970: 1742256000)
     
     
     // -------------------- ENUMS --------------------

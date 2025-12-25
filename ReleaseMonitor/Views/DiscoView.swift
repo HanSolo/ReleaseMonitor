@@ -13,7 +13,7 @@ struct DiscoView: View {
     
     var body: some View {
         ZStack {
-            let titleFont   : Font = Font.custom("MetaHeadlineWebW04-Bold", size: 66)
+            let titleFont   : Font = Font.custom("MetaHeadlineWebW04-Bold", size: 62)
             let subtitleFont: Font = Font.custom("MetaHeadlineWebW04-Light", size: 20)
             let distroFont  : Font = Font.custom("MetaHeadlineWebW04-Light", size: 24)
             let versionFont : Font = Font.custom("MetaHeadlineWebW04-Light", size: 24)

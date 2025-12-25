@@ -34,8 +34,16 @@ class UpcomingReleases: Codable {
         dateOfNextUpdate     = try? container.decode(String.self, forKey: .dateOfNextUpdate)
         versionsOfNextUpdate = try? container.decode(String.self, forKey: .versionsOfNextUpdate)
         daysUntilNextUpdate  = try? container.decode(Int.self,    forKey: .daysUntilNextUpdate)
+    }    
+    
+    init(dateOfNextRelease: String?, versionOfNextRelease: String?, daysUntilnextRelease: Int?, dateOfNextUpdate: String?, versionsOfNextUpdate: String?, daysUntilNextUpdate: Int?) {
+        self.dateOfNextRelease    = dateOfNextRelease
+        self.versionOfNextRelease = versionOfNextRelease
+        self.daysUntilNextRelease = daysUntilnextRelease
+        self.dateOfNextUpdate     = dateOfNextUpdate
+        self.versionsOfNextUpdate = versionsOfNextUpdate
+        self.daysUntilNextUpdate  = daysUntilNextUpdate
     }
-
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
