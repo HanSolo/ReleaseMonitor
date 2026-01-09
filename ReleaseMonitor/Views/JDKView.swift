@@ -91,15 +91,61 @@ struct JDKView: View {
                     .opacity(self.model.networkMonitor.isOnline ? 0.0 : 1.0)
                 Spacer()
                 
-                Button(action: {
-                    self.model.update()
-                }, label: {
-                    HStack {
-                        Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
-                        Text("Update")
-                    }
-                })
-                .buttonStyle(.bordered)
+                HStack {
+                    Text("OFFLINE")
+                        .font(.system(size: 9))
+                        .padding(EdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5))
+                        .foregroundStyle(.white)
+                        .background(
+                            ZStack {
+                                RoundedRectangle(
+                                    cornerRadius: 9,
+                                    style       : .continuous
+                                )
+                                .fill(.red)
+                                RoundedRectangle(
+                                    cornerRadius: 9,
+                                    style       : .continuous
+                                )
+                                .stroke(.red, lineWidth: 1)
+                            }
+                        )
+                        .opacity(self.model.networkMonitor.isOnline ? 0.0 : 1.0)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        self.model.update()
+                    }, label: {
+                        HStack {
+                            Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
+                            Text("Update")
+                        }
+                    })
+                    .buttonStyle(.bordered)
+                    
+                    Spacer()
+                    
+                    Text("API OFFLINE")
+                        .font(.system(size: 9))
+                        .padding(EdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5))
+                        .foregroundStyle(.black)
+                        .background(
+                            ZStack {
+                                RoundedRectangle(
+                                    cornerRadius: 9,
+                                    style       : .continuous
+                                )
+                                .fill(.yellow)
+                                RoundedRectangle(
+                                    cornerRadius: 9,
+                                    style       : .continuous
+                                )
+                                .stroke(.yellow, lineWidth: 1)
+                            }
+                        )
+                        .opacity(self.model.discoApiAvailable ? 0.0 : 1.0)
+                }
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 70, trailing: 0))
             }
             .padding()

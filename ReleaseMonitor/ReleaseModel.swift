@@ -17,6 +17,7 @@ public class ReleaseModel {
     }()
     
     var networkMonitor      : NetworkMonitor         = NetworkMonitor.shared
+    var discoApiAvailable   : Bool                   = true
     var upcomingReleases    : [UpcomingReleases]     = []
     var distributions       : [Distribution]         = []
     var latestOnMarketPlace : [String:VersionNumber] = ["Temurin"    : VersionNumber(feature: 1),
@@ -29,15 +30,20 @@ public class ReleaseModel {
     public func update() -> Void {
         Task {
             if networkMonitor.isConnected {
-                self.upcomingReleases = await RestController.fetchUpcomingReleases()
-                self.distributions    = await RestController.fetchDistributions()
-                
-                for vendor in Constants.MARKETPLACE_VENDORS.keys {
-                    let versionNumber: VersionNumber? = await RestController.fetchLatestReleasesFromMarketPlace(vendor: vendor)
-                    if nil != versionNumber {
-                        let uiString : String = Constants.MARKETPLACE_VENDORS[vendor]!
-                        self.latestOnMarketPlace[uiString] = versionNumber!
+                if await RestController.checkApiAvailability() {
+                    self.discoApiAvailable = true
+                    self.upcomingReleases  = await RestController.fetchUpcomingReleases()
+                    self.distributions     = await RestController.fetchDistributions()
+                    
+                    for vendor in Constants.MARKETPLACE_VENDORS.keys {
+                        let versionNumber: VersionNumber? = await RestController.fetchLatestReleasesFromMarketPlace(vendor: vendor)
+                        if nil != versionNumber {
+                            let uiString : String = Constants.MARKETPLACE_VENDORS[vendor]!
+                            self.latestOnMarketPlace[uiString] = versionNumber!
+                        }
                     }
+                } else {
+                    self.discoApiAvailable = false
                 }
             } else {
                 let nextReleaseWithDate : (VersionNumber, Date) = Helper.calcNextRelease()

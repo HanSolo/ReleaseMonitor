@@ -22,7 +22,7 @@ struct ContentView: View {
             Tab {
                 DiscoView()
             }
-            .disabled(!self.model.networkMonitor.isOnline)
+            .disabled(!self.model.networkMonitor.isOnline || !self.model.discoApiAvailable)
             
             //Tab("MarketPlace", image: "marketplace") {
             Tab {
