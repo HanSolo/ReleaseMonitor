@@ -46,6 +46,7 @@ public class ReleaseModel {
                     self.discoApiAvailable = false
                 }
             } else {
+                // Next release
                 let nextReleaseWithDate : (VersionNumber, Date) = Helper.calcNextRelease()
                 let nextUpdateWithDate  : (VersionNumber, Date) = Helper.calcNextUpdate()
                 
@@ -61,6 +62,22 @@ public class ReleaseModel {
                 
                 let ur : UpcomingReleases = UpcomingReleases(dateOfNextRelease: dateOfNextRelease, versionOfNextRelease: versionOfNextRelease, daysUntilnextRelease: daysUntilNextRelease, dateOfNextUpdate: dateOfNextUpdate, versionsOfNextUpdate: versionsOfNextUpdate, daysUntilNextUpdate: daysUntilNextUpdate)
                 self.upcomingReleases.append(ur)
+                
+                
+                /* Last release
+                let lastReleaseWithDate : (VersionNumber, Date) = Helper.calcLastRelease()
+                let lastUpdateWithDate  : (VersionNumber, Date) = Helper.calcLastUpdate()
+                
+                let lastRelease : JDKUpdate = Helper.getLastRelease()
+                let lastUpdate  : JDKUpdate = Helper.getLastUpdate()
+            
+                let dateOfLastRelease    : String = Constants.DF_ISO.string(from: lastReleaseWithDate.1)
+                let versionOfLastRelease : String = lastReleaseWithDate.0.toString(outputFormat: Constants.OutputFormat.reduced_compressed, javaFormat: true, includeReleaseStatusAndBuild: false)
+                let daysSinceLastRelease : Int    = lastRelease.remainingDays
+                let dateOfLastUpdate     : String = Constants.DF_ISO.string(from: lastUpdateWithDate.1)
+                let versionsOfLastUpdate : String = lastUpdateWithDate.0.toString(outputFormat: Constants.OutputFormat.reduced_compressed, javaFormat: true, includeReleaseStatusAndBuild: false)
+                let daysSinceLastUpdate  : Int    = lastUpdate.remainingDays
+                */
             }
         }
     }

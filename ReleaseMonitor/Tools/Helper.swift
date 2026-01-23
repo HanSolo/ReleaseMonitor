@@ -172,7 +172,7 @@ public struct Helper {
         
         let sorted = days.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
         
-        return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value + 1, type: Constants.UpdateType.release)
+        return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value, type: Constants.UpdateType.release)
     }
     
     public static func getLastUpdate() -> JDKUpdate { return getLastUpdate(from: Date()) }
@@ -228,12 +228,11 @@ public struct Helper {
             updateLastOctober = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
         }
         
-        
-        let daysSinceUpdateJanuary     = Calendar.current.dateComponents([.day], from: from, to: updateJanuary)
-        let daysSinceUpdateApril       = Calendar.current.dateComponents([.day], from: from, to: updateApril)
-        let daysSinceUpdateJuly        = Calendar.current.dateComponents([.day], from: from, to: updateJuly)
-        let daysSinceUpdateOctober     = Calendar.current.dateComponents([.day], from: from, to: updateOctober)
-        let daysSinceUpdateLastOctober = Calendar.current.dateComponents([.day], from: from, to: updateLastOctober)
+        let daysSinceUpdateJanuary     = Calendar.current.dateComponents([.day], from: updateJanuary, to: from)
+        let daysSinceUpdateApril       = Calendar.current.dateComponents([.day], from: updateApril, to: from)
+        let daysSinceUpdateJuly        = Calendar.current.dateComponents([.day], from: updateJuly, to: from)
+        let daysSinceUpdateOctober     = Calendar.current.dateComponents([.day], from: updateOctober, to: from)
+        let daysSinceUpdateLastOctober = Calendar.current.dateComponents([.day], from: updateOctober, to: from)
         
         var days : [Date:Int]   = [:]
         days[updateJanuary]     = daysSinceUpdateJanuary.day
@@ -244,15 +243,15 @@ public struct Helper {
         
         let sorted = days.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
         
-        return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value + 1, type: Constants.UpdateType.release)
+        return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value, type: Constants.UpdateType.release)
     }
     
-    public static func calcLastRelease() -> (VersionNumber,Date) {
+    static func calcLastRelease() -> (VersionNumber,Date) {
         let now             : Date = Date()
         var lastReleaseDate : Date = Constants.JDK_24_RELEASE_DATE
         var lastRelease     : Int    = 24
         var jdkUpdate       : JDKUpdate = getLastRelease(from: lastReleaseDate)
-        for i in Int.max...24 {
+        for i in (11...24).reversed() {
             jdkUpdate       = getLastRelease(from: lastReleaseDate.dayBefore)
             lastReleaseDate = jdkUpdate.date
             lastRelease     = i
@@ -260,13 +259,13 @@ public struct Helper {
         }
         return (VersionNumber(feature: lastRelease), lastReleaseDate)
     }
-    public static func calcLastUpdate() -> (VersionNumber,Date) {
+    static func calcLastUpdate() -> (VersionNumber,Date) {
         let now             : Date      = Date()
         var lastUpdateDate  : Date      = Constants.JDK_23_RELEASE_DATE
-        var lastUpdate      : Int       = 23
+        var lastUpdate      : Int       = 24
         var jdkUpdate       : JDKUpdate = getLastUpdate(from: lastUpdateDate)
         var updateVersion   : Int       = 0
-        for _ in Int.max...24 {
+        for _ in (24...1024).reversed() {
                 jdkUpdate       = getLastUpdate(from: lastUpdateDate.dayBefore)
                 lastUpdateDate  = jdkUpdate.date
                 updateVersion   += 1
@@ -386,7 +385,7 @@ public struct Helper {
         return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value + 1, type: Constants.UpdateType.release)
     }
     
-    public static func calcNextRelease() -> (VersionNumber,Date) {
+    static func calcNextRelease() -> (VersionNumber,Date) {
         let now             : Date = Date()
         var nextReleaseDate : Date = Constants.JDK_24_RELEASE_DATE
         var nextRelease     : Int    = 24
@@ -396,10 +395,10 @@ public struct Helper {
             nextReleaseDate = jdkUpdate.date
             nextRelease     = i
             if (nextReleaseDate >= now) { break; }
-        }        
+        }
         return (VersionNumber(feature: nextRelease), nextReleaseDate)
     }
-    public static func calcNextUpdate() -> (VersionNumber,Date) {
+    static func calcNextUpdate() -> (VersionNumber,Date) {
         let now             : Date      = Date()
         var nextUpdateDate  : Date      = Constants.JDK_23_RELEASE_DATE
         var nextUpdate      : Int       = 23

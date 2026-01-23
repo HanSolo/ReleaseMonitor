@@ -33,12 +33,17 @@ struct ContentView: View {
         .tabViewStyle(.page(indexDisplayMode: .always))
         .background(Constants.AZUL_BLUE)
         .task {
-            self.model.update()
             let lastUpdate  : JDKUpdate = Helper.getLastUpdate()
             let lastRelease : JDKUpdate = Helper.getLastRelease()
+            let nextUpdate  : JDKUpdate = Helper.getNextUpdate()
+            let nextRelease : JDKUpdate = Helper.getNextRelease()
+        
+            debugPrint("Last Update : \(lastUpdate.remainingDays) days ago on \(Constants.DF_ISO.string(from: lastUpdate.date))")
+            debugPrint("Last Release: \(lastRelease.remainingDays) days ago aon \(Constants.DF_ISO.string(from: lastRelease.date))")
+            debugPrint("Next Update : in \(nextUpdate.remainingDays) days on \(Constants.DF_ISO.string(from: nextUpdate.date))")
+            debugPrint("Next Release: in \(nextRelease.remainingDays) days aon \(Constants.DF_ISO.string(from: nextRelease.date))")
             
-            debugPrint("last update : \(lastUpdate.remainingDays) days ago on \(lastUpdate.date)")
-            debugPrint("last release: \(lastRelease.remainingDays) days ago aon \(lastRelease.date)")
+            self.model.update()
         }
     }
 }
