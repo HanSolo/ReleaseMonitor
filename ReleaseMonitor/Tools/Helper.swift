@@ -139,6 +139,145 @@ public struct Helper {
         isoDateFormatter.formatOptions = [.withFullDate]
         return isoDateFormatter.date(from: isoString)
     }
+
+    public static func getLastRelease() -> JDKUpdate { return getLastRelease(from: Date()) }
+    public static func getLastRelease(from: Date) -> JDKUpdate {
+        let date = Calendar.current.dateComponents([.year], from: from)
+        
+        var components = DateComponents()
+        
+        components.year  = date.year
+        components.month = 3
+        components.day   = 1
+        let updateMarch : Date = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
+        
+        components.month = 9
+        components.day   = 1
+        let updateSeptember : Date = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
+        
+        components.year  = date.year! - 1
+        components.month = 9
+        components.day   = 1
+        let updateLastSeptember : Date = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
+        
+        
+        let daysSinceUpdateMarch     = Calendar.current.dateComponents([.day], from: updateMarch, to: from)
+        let daysSinceUpdateSeptember = Calendar.current.dateComponents([.day], from: updateSeptember, to: from)
+        let daysSinceUpdateLastMarch = Calendar.current.dateComponents([.day], from: updateLastSeptember, to: from)
+        
+        var days : [Date:Int] = [:]
+        days[updateMarch]         = daysSinceUpdateMarch.day
+        days[updateSeptember]     = daysSinceUpdateSeptember.day
+        days[updateLastSeptember] = daysSinceUpdateLastMarch.day
+        
+        let sorted = days.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
+        
+        return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value + 1, type: Constants.UpdateType.release)
+    }
+    
+    public static func getLastUpdate() -> JDKUpdate { return getLastUpdate(from: Date()) }
+    public static func getLastUpdate(from: Date) -> JDKUpdate {
+        let date       = Calendar.current.dateComponents([.year], from: from)
+        var components = DateComponents()
+        
+        // 1 = Sunday, 2 = Monday, 3 = Tuesday, 4 = Wednesday, 5 = Thursday, 6 = Friday, 7 = Saturday
+        components.year  = date.year
+        components.month = 1
+        components.day   = 1
+        let updateJanuary : Date
+        if Calendar.current.component(.weekday, from: Calendar.current.date(from:components)!) == 3 {
+            updateJanuary = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday))!
+        } else {
+            updateJanuary = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
+        }
+        
+        components.month = 4
+        components.day   = 1
+        let updateApril : Date
+        if Calendar.current.component(.weekday, from: Calendar.current.date(from:components)!) == 3 {
+            updateApril = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday))!
+        } else {
+            updateApril = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
+        }
+        
+        components.month = 7
+        components.day   = 1
+        let updateJuly : Date
+        if Calendar.current.component(.weekday, from: Calendar.current.date(from:components)!) == 3 {
+            updateJuly = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday))!
+        } else {
+            updateJuly = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
+        }
+        
+        components.month = 10
+        components.day   = 1
+        let updateOctober : Date
+        if Calendar.current.component(.weekday, from: Calendar.current.date(from:components)!) == 3 {
+            updateOctober = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday))!
+        } else {
+            updateOctober = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
+        }
+        
+        components.year  = date.year! - 1
+        components.month = 10
+        components.day   = 1
+        let updateLastOctober : Date
+        if Calendar.current.component(.weekday, from: Calendar.current.date(from:components)!) == 3 {
+            updateLastOctober = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday))!
+        } else {
+            updateLastOctober = (Calendar.current.date(from: components)?.next(.tuesday).next(.tuesday).next(.tuesday))!
+        }
+        
+        
+        let daysSinceUpdateJanuary     = Calendar.current.dateComponents([.day], from: from, to: updateJanuary)
+        let daysSinceUpdateApril       = Calendar.current.dateComponents([.day], from: from, to: updateApril)
+        let daysSinceUpdateJuly        = Calendar.current.dateComponents([.day], from: from, to: updateJuly)
+        let daysSinceUpdateOctober     = Calendar.current.dateComponents([.day], from: from, to: updateOctober)
+        let daysSinceUpdateLastOctober = Calendar.current.dateComponents([.day], from: from, to: updateLastOctober)
+        
+        var days : [Date:Int]   = [:]
+        days[updateJanuary]     = daysSinceUpdateJanuary.day
+        days[updateApril]       = daysSinceUpdateApril.day
+        days[updateJuly]        = daysSinceUpdateJuly.day
+        days[updateOctober]     = daysSinceUpdateOctober.day
+        days[updateLastOctober] = daysSinceUpdateLastOctober.day
+        
+        let sorted = days.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
+        
+        return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value + 1, type: Constants.UpdateType.release)
+    }
+    
+    public static func calcLastRelease() -> (VersionNumber,Date) {
+        let now             : Date = Date()
+        var lastReleaseDate : Date = Constants.JDK_24_RELEASE_DATE
+        var lastRelease     : Int    = 24
+        var jdkUpdate       : JDKUpdate = getLastRelease(from: lastReleaseDate)
+        for i in Int.max...24 {
+            jdkUpdate       = getLastRelease(from: lastReleaseDate.dayBefore)
+            lastReleaseDate = jdkUpdate.date
+            lastRelease     = i
+            if (lastReleaseDate <= now) { break; }
+        }
+        return (VersionNumber(feature: lastRelease), lastReleaseDate)
+    }
+    public static func calcLastUpdate() -> (VersionNumber,Date) {
+        let now             : Date      = Date()
+        var lastUpdateDate  : Date      = Constants.JDK_23_RELEASE_DATE
+        var lastUpdate      : Int       = 23
+        var jdkUpdate       : JDKUpdate = getLastUpdate(from: lastUpdateDate)
+        var updateVersion   : Int       = 0
+        for _ in Int.max...24 {
+                jdkUpdate       = getLastUpdate(from: lastUpdateDate.dayBefore)
+                lastUpdateDate  = jdkUpdate.date
+                updateVersion   += 1
+                if updateVersion == 3 {
+                    updateVersion =  1
+                    lastUpdate    += 1
+                }
+                if (lastUpdateDate <= now) { break }
+        }
+        return( VersionNumber(feature: lastUpdate, interim: 0, update: updateVersion), lastUpdateDate)
+    }
     
     public static func getNextRelease() -> JDKUpdate { return getNextRelease(from: Date()) }
     public static func getNextRelease(from: Date) -> JDKUpdate {
@@ -165,12 +304,12 @@ public struct Helper {
         let daysToUpdateSeptember = Calendar.current.dateComponents([.day], from: from, to: updateSeptember)
         let daysToUpdateNextMarch = Calendar.current.dateComponents([.day], from: from, to: updateNextMarch)
         
-        var remainingDays : [Date:Int] = [:]
-        remainingDays[updateMarch]     = daysToUpdateMarch.day
-        remainingDays[updateSeptember] = daysToUpdateSeptember.day
-        remainingDays[updateNextMarch] = daysToUpdateNextMarch.day
+        var days : [Date:Int] = [:]
+        days[updateMarch]     = daysToUpdateMarch.day
+        days[updateSeptember] = daysToUpdateSeptember.day
+        days[updateNextMarch] = daysToUpdateNextMarch.day
         
-        let sorted = remainingDays.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
+        let sorted = days.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
         
         return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value + 1, type: Constants.UpdateType.release)
     }
@@ -235,14 +374,14 @@ public struct Helper {
         let daysToUpdateOctober     = Calendar.current.dateComponents([.day], from: from, to: updateOctober)
         let daysToUpdateNextJanuary = Calendar.current.dateComponents([.day], from: from, to: updateNextJanuary)
         
-        var remainingDays : [Date:Int]   = [:]
-        remainingDays[updateJanuary]     = daysToUpdateJanuary.day
-        remainingDays[updateApril]       = daysToUpdateApril.day
-        remainingDays[updateJuly]        = daysToUpdateJuly.day
-        remainingDays[updateOctober]     = daysToUpdateOctober.day
-        remainingDays[updateNextJanuary] = daysToUpdateNextJanuary.day
+        var days : [Date:Int]   = [:]
+        days[updateJanuary]     = daysToUpdateJanuary.day
+        days[updateApril]       = daysToUpdateApril.day
+        days[updateJuly]        = daysToUpdateJuly.day
+        days[updateOctober]     = daysToUpdateOctober.day
+        days[updateNextJanuary] = daysToUpdateNextJanuary.day
         
-        let sorted = remainingDays.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
+        let sorted = days.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
         
         return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value + 1, type: Constants.UpdateType.release)
     }

@@ -34,6 +34,11 @@ struct ContentView: View {
         .background(Constants.AZUL_BLUE)
         .task {
             self.model.update()
+            let lastUpdate  : JDKUpdate = Helper.getLastUpdate()
+            let lastRelease : JDKUpdate = Helper.getLastRelease()
+            
+            debugPrint("last update : \(lastUpdate.remainingDays) days ago on \(lastUpdate.date)")
+            debugPrint("last release: \(lastRelease.remainingDays) days ago aon \(lastRelease.date)")
         }
     }
 }
