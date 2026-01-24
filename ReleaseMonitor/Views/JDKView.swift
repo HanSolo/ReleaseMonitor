@@ -55,9 +55,11 @@ struct JDKView: View {
                 
                 Text("\(lastReleaseDaysTxt)\(lastRelaseDaysNumberText)\(lastReleaseDaysText)")
                     .font(releaseFontLightSmall)
+                    .opacity(0.6)
                 Text("\(Text("(on ").foregroundStyle(.white))\(Text(Constants.DF.string(from: lastRelease.date)).foregroundStyle(Constants.AZUL_LIGHT_BLUE))\(Text(")").foregroundStyle(.white))")
                     .font(releaseFontLightSmall)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 0))
+                    .opacity(0.6)
                 
                 // Next Update
                 let nextUpdate             : JDKUpdate = Helper.getNextUpdate()
@@ -82,15 +84,17 @@ struct JDKView: View {
                 let lastUpdate                   : JDKUpdate = Helper.getLastUpdate()
                 let daysSinceLastUpdate          : Int       = lastUpdate.remainingDays
                 let daysSinceLastUpdateVisible   : Bool      = daysSinceLastUpdate == 1 ? false : true
-                let lastUpdateDaysTxt            : Text      = Text(daysSinceLastUpdate == 1 ? "last came yesterday" : "last came").foregroundStyle(.white)
+                let lastUpdateDaysTxt            : Text      = Text("last updates came\(daysSinceLastUpdate == 1 ? " yesterday" : "")").foregroundStyle(.white)
                 let lastUpdateDaysNumberText     : Text      = Text(daysSinceLastUpdateVisible ? " \(daysSinceLastUpdate) " : "").foregroundStyle(Constants.AZUL_LIGHT_BLUE)
                 let lastUpdateDaysText           : Text      = Text(daysSinceLastUpdateVisible ? "days ago" : "").foregroundStyle(.white)
                 
                 Text("\(lastUpdateDaysTxt)\(lastUpdateDaysNumberText)\(lastUpdateDaysText)")
                     .font(updateFontLightSmall)
+                    .opacity(0.6)
                 Text("\(Text("(on ").foregroundStyle(.white))\(Text(Constants.DF.string(from: lastUpdate.date)).foregroundStyle(Constants.AZUL_LIGHT_BLUE))\(Text(")").foregroundStyle(.white))")
                     .font(updateFontLightSmall)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+                    .opacity(0.6)
                 
                 
                 // Upcoming updates
