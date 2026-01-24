@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Observation
 
 
 @Observable
@@ -18,6 +19,8 @@ public class ReleaseModel {
     
     var networkMonitor      : NetworkMonitor         = NetworkMonitor.shared
     var discoApiAvailable   : Bool                   = true
+    var lastRelease         : Int                    = Helper.calcLastRelease().0.feature ?? 0
+    var nextRelease         : Int                    = Helper.calcNextRelease().0.feature ?? 0
     var upcomingReleases    : [UpcomingReleases]     = []
     var distributions       : [Distribution]         = []
     var latestOnMarketPlace : [String:VersionNumber] = ["Temurin"    : VersionNumber(feature: 1),
@@ -27,8 +30,35 @@ public class ReleaseModel {
                                                         "Microsoft"  : VersionNumber(feature: 1),
                                                         "RedHat"     : VersionNumber(feature: 1)]
     
-    public func update() -> Void {
+    private init() {
+        Timer.scheduledTimer(withTimeInterval: Constants.UPDATE_CHECK_INTERVAL, repeats: true) { timer in
+            Task {
+                self.discoApiAvailable = await RestController.checkApiAvailability()
+            }
+            
+            let now        : Double = Date.init().timeIntervalSince1970
+            let lastUpdate : Double = Properties.instance.lastUpdate!
+                                                
+            if now - lastUpdate > Constants.UPDATE_INTERVAL && self.networkMonitor.isOnline {
+                Task.detached {
+                    await self.update()
+                }
+            }
+        }
+        
+        // Initial update
+        if self.networkMonitor.isOnline {
+            Task.detached {
+                await self.update()
+            }
+        }
+    }
+    
+    @MainActor public func update() async -> Void {
         Task {
+            self.lastRelease = Helper.calcLastRelease().0.feature ?? 0
+            self.nextRelease = Helper.calcNextRelease().0.feature ?? 0
+            
             if networkMonitor.isConnected {
                 if await RestController.checkApiAvailability() {
                     self.discoApiAvailable = true

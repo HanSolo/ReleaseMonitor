@@ -17,6 +17,10 @@ public struct Constants {
     public static let REQUEST_TIMEOUT             : Double                 = 60.0
     public static let RESOURCE_TIMEOUT            : Double                 = 120.0
     
+    public static let UPDATE_CHECK_INTERVAL       : Double                 = 300    // every  5 minutes
+    public static let UPDATE_INTERVAL             : Double                 = 3_600  // every  1 hour
+    
+    
     public static let DISCO_API_BASE_URL          : String                 = "https://api.foojay.io/disco/v3.0/"
     public static let DISCO_UPCOMING_RELEASES_URL : String                 = "\(DISCO_API_BASE_URL)upcoming_releases"
     public static let DISCO_LATEST_VERSION_URL    : String                 = "\(DISCO_API_BASE_URL)distributions/versions/latest?distribution=bisheng,corretto,dragonwell,graalvm,graalvm_community,liberica,liberica_native,microsoft,openlogic,oracle_open_jdk,oracle,sap_machine,semeru,temurin,zulu&include_ea=true"

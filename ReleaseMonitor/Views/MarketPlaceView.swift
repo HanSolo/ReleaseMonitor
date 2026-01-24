@@ -49,9 +49,11 @@ struct MarketPlaceView: View {
                             .font(distroFont)
                             .foregroundStyle(.white)
                         Spacer()
-                        Text(self.model.latestOnMarketPlace[vendor]!.toString(outputFormat: Constants.OutputFormat.reduced_compressed, javaFormat: true, includeReleaseStatusAndBuild: false))
-                            .font(versionFont)
-                            .foregroundStyle(Constants.AZUL_LIGHT_BLUE)
+                        if self.model.latestOnMarketPlace[vendor]!.feature != 1 {
+                            Text(self.model.latestOnMarketPlace[vendor]!.toString(outputFormat: Constants.OutputFormat.reduced_compressed, javaFormat: true, includeReleaseStatusAndBuild: false))
+                                .font(versionFont)
+                                .foregroundStyle(Constants.AZUL_LIGHT_BLUE)
+                        }
                     }
                 }
                 Spacer()

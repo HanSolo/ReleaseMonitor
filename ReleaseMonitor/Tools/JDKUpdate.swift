@@ -9,17 +9,17 @@ import Foundation
 
 
 public struct JDKUpdate : Hashable, Identifiable {
-    public let id    : String
-    let date         : Date
-    let remainingDays: Int
-    let type         : Constants.UpdateType
+    public let id      : String
+    let date           : Date
+    let remainingDays  : Int
+    let type           : Constants.UpdateType
     
     
     init(date: Date, remainingDays: Int, type: Constants.UpdateType) {
-        self.id            = UUID().uuidString
-        self.date          = date
-        self.remainingDays = remainingDays
-        self.type          = type
+        self.id             = UUID().uuidString
+        self.date           = date
+        self.remainingDays  = remainingDays
+        self.type           = type
     }
     
     

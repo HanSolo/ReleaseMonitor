@@ -170,6 +170,8 @@ public struct Helper {
         days[updateSeptember]     = daysSinceUpdateSeptember.day
         days[updateLastSeptember] = daysSinceUpdateLastMarch.day
         
+        
+        
         let sorted = days.filter { $0.value >= 0 }.sorted { $0.1 < $1.1 }
         
         return JDKUpdate(date: sorted.first!.key, remainingDays: sorted.first!.value, type: Constants.UpdateType.release)
@@ -249,10 +251,11 @@ public struct Helper {
     static func calcLastRelease() -> (VersionNumber,Date) {
         let now             : Date = Date()
         var lastReleaseDate : Date = Constants.JDK_24_RELEASE_DATE
-        var lastRelease     : Int    = 24
+        var lastRelease     : Int  = nil == calcNextRelease().0.feature ? 0 : calcNextRelease().0.feature! - 1
         var jdkUpdate       : JDKUpdate = getLastRelease(from: lastReleaseDate)
-        for i in (11...24).reversed() {
-            jdkUpdate       = getLastRelease(from: lastReleaseDate.dayBefore)
+        for i in (11...lastRelease).reversed() {
+            debugPrint(i)
+            jdkUpdate       = getLastRelease(from: lastReleaseDate.dayAfter)
             lastReleaseDate = jdkUpdate.date
             lastRelease     = i
             if (lastReleaseDate <= now) { break; }
@@ -262,11 +265,11 @@ public struct Helper {
     static func calcLastUpdate() -> (VersionNumber,Date) {
         let now             : Date      = Date()
         var lastUpdateDate  : Date      = Constants.JDK_23_RELEASE_DATE
-        var lastUpdate      : Int       = 24
+        var lastUpdate      : Int       = 23
         var jdkUpdate       : JDKUpdate = getLastUpdate(from: lastUpdateDate)
         var updateVersion   : Int       = 0
         for _ in (24...1024).reversed() {
-                jdkUpdate       = getLastUpdate(from: lastUpdateDate.dayBefore)
+            jdkUpdate       = getLastUpdate(from: lastUpdateDate.dayAfter)
                 lastUpdateDate  = jdkUpdate.date
                 updateVersion   += 1
                 if updateVersion == 3 {

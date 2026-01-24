@@ -8,12 +8,10 @@
 
 import Foundation
 import SwiftUI
-import os.log
 
 
 extension Key {
-    //static let showOnboardingView : Key = "showOnboardingView"
-    //static let duration           : Key = "duration"
+    static let lastUpdate : Key = "lastUpdate" // epoch seconds of last update
 }
 
 
@@ -22,6 +20,9 @@ extension Key {
 public struct Properties {
     
     static var instance = Properties()
+    
+    @UserDefault(key: .lastUpdate, defaultValue: Date.init().timeIntervalSince1970)
+    var lastUpdate: Double?
     
     
     private init() {}
