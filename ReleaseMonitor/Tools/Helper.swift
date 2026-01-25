@@ -140,6 +140,20 @@ public struct Helper {
         return isoDateFormatter.date(from: isoString)
     }
 
+    public static func createDate(year: Int, month: Int, day: Int) -> Date? {
+        var calendar    : Calendar = Calendar.current
+        calendar.locale = Locale(identifier: Locale.current.identifier)
+
+        var dateComponents : DateComponents = DateComponents()
+        dateComponents.year   = year
+        dateComponents.month  = month
+        dateComponents.day    = day
+        dateComponents.hour   = 12
+        dateComponents.minute = 00
+        
+        return calendar.date(from: dateComponents)
+    }
+    
     public static func getLastRelease() -> JDKUpdate { return getLastRelease(from: Date()) }
     public static func getLastRelease(from: Date) -> JDKUpdate {
         let date = Calendar.current.dateComponents([.year], from: from)

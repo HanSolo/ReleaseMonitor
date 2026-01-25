@@ -62,8 +62,8 @@ public struct Constants {
                                                                               "semeru"            : Update.init(distribution: Distribution(uiString: "Semeru",       apiString: "semeru",            latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
                                                                               "temurin"           : Update.init(distribution: Distribution(uiString: "Temurin",      apiString: "temurin",           latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
                                                                               "zulu"              : Update.init(distribution: Distribution(uiString: "Zulu",         apiString: "graalvm_community", latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME)]
-    public static let JDK_23_RELEASE_DATE         : Date                   = Date.init(timeIntervalSince1970: 1726531200)
-    public static let JDK_24_RELEASE_DATE         : Date                   = Date.init(timeIntervalSince1970: 1742256000)
+    public static let JDK_23_RELEASE_DATE         : Date                   = Helper.createDate(year: 2024, month: 9, day: 17)!
+    public static let JDK_24_RELEASE_DATE         : Date                   = Helper.createDate(year: 2025, month: 3, day: 18)!
     
     
     // -------------------- ENUMS --------------------
