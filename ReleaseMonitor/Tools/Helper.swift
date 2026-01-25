@@ -268,7 +268,6 @@ public struct Helper {
         var lastRelease     : Int  = nil == calcNextRelease().0.feature ? 0 : calcNextRelease().0.feature! - 1
         var jdkUpdate       : JDKUpdate = getLastRelease(from: lastReleaseDate)
         for i in (11...lastRelease).reversed() {
-            debugPrint(i)
             jdkUpdate       = getLastRelease(from: lastReleaseDate.dayAfter)
             lastReleaseDate = jdkUpdate.date
             lastRelease     = i

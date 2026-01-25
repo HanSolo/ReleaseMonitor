@@ -172,5 +172,10 @@ struct JDKView: View {
             }
             .padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10))
         }
+        .task {
+            if self.model.networkMonitor.isOnline {
+                await self.model.update()
+            }
+        }
     }
 }
