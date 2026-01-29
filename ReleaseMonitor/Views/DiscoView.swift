@@ -15,8 +15,8 @@ struct DiscoView: View {
         ZStack {
             let titleFont   : Font = Font.custom("MetaHeadlineWebW04-Bold", size: 60)
             let subtitleFont: Font = Font.custom("MetaHeadlineWebW04-Light", size: 20)
-            let distroFont  : Font = Font.custom("MetaHeadlineWebW04-Light", size: 24)
-            let versionFont : Font = Font.custom("MetaHeadlineWebW04-Light", size: 24)
+            let distroFont  : Font = Font.custom("MetaHeadlineWebW04-Light", size: 21)
+            let versionFont : Font = Font.custom("MetaHeadlineWebW04-Light", size: 21)
             Constants.AZUL_BLUE
                 .ignoresSafeArea()
             VStack(spacing: 3) {
@@ -39,11 +39,11 @@ struct DiscoView: View {
                     Text("GA RELEASE")
                         .font(subtitleFont)
                         .foregroundStyle(Constants.AZUL_LIGHTER_BLUE)
-                        .frame(minWidth: 120, alignment: .trailing)
+                        .frame(minWidth: 110, alignment: .trailing)
                     Text("EA RELEASE")
                         .font(subtitleFont)
                         .foregroundStyle(Constants.AZUL_LIGHTER_BLUE)
-                        .frame(minWidth: 120, alignment: .trailing)
+                        .frame(minWidth: 110, alignment: .trailing)
                 }
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
                 
@@ -55,17 +55,17 @@ struct DiscoView: View {
                         Spacer()
                         HStack(spacing: 20) {
                             Text(distro.latestGA!.toString(outputFormat: Constants.OutputFormat.reduced_compressed, javaFormat: true, includeReleaseStatusAndBuild: false))
-                                .frame(minWidth: 120, alignment: .trailing)
+                                .frame(minWidth: 110, alignment: .trailing)
                                 .font(versionFont)
                                 .foregroundStyle(Constants.AZUL_LIGHT_BLUE)
                             if distro.latestEA != nil && distro.latestEA!.feature != 1 {
                                 Text(distro.latestEA!.toString(outputFormat: Constants.OutputFormat.reduced_compressed, javaFormat: true, includeReleaseStatusAndBuild: true))
-                                    .frame(minWidth: 120, alignment: .trailing)
+                                    .frame(minWidth: 110, alignment: .trailing)
                                     .font(versionFont)
                                     .foregroundStyle(Constants.AZUL_LIGHT_BLUE)
                             } else {
                                 Spacer()
-                                    .frame(maxWidth: 120)
+                                    .frame(maxWidth: 110)
                             }
                         }
                     }

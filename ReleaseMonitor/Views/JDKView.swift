@@ -19,7 +19,7 @@ struct JDKView: View {
             let releaseFontLightSmall : Font = Font.custom("MetaHeadlineWebW04-Light", size: 24)
             let updateFontBig         : Font = Font.custom("MetaHeadlineWebW04-Bold", size: 66)
             let updateFont            : Font = Font.custom("MetaHeadlineWebW04-Bold", size: 32)
-            let updateFontLighter     : Font = Font.custom("MetaHeadlineWebW04-Light", size: 24)
+            let updateFontLighter     : Font = Font.custom("MetaHeadlineWebW04-Light", size: 20)
             let updateFontLight       : Font = Font.custom("MetaHeadlineWebW04-Light", size: 28)
             let updateFontLightSmall  : Font = Font.custom("MetaHeadlineWebW04-Light", size: 24)
             
@@ -93,7 +93,7 @@ struct JDKView: View {
                     .opacity(0.6)
                 Text("\(Text("(on ").foregroundStyle(.white))\(Text(Constants.DF.string(from: lastUpdate.date)).foregroundStyle(Constants.AZUL_LIGHT_BLUE))\(Text(")").foregroundStyle(.white))")
                     .font(updateFontLightSmall)
-                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
                     .opacity(0.6)
                 
                 
@@ -106,6 +106,7 @@ struct JDKView: View {
                                 .foregroundStyle(Constants.AZUL_LIGHT_BLUE)
                         }
                     }
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
                 }
                       
                 Spacer()
