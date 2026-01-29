@@ -30,6 +30,47 @@ public struct Helper {
         return majorVersions
     }
     
+    public static func parseLTSVersionJSONEntries(data: Data) -> [VersionNumber]? {
+        var ltsVersions    : [VersionNumber]     = []
+        var maxLtsVersions : [Int:VersionNumber] = [:]
+        do {
+            let jsonString : String = String(data: data, encoding: .utf8)!
+            if let jsonData = jsonString.data(using: .utf8) {
+                if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                    if let result = jsonObject["result"] as? [Any] {
+                        for entry in result {
+                            guard let mainObject : [String: Any] = entry as? [String: Any] else { return [] }
+                            guard let versions   : [String] = mainObject["versions"] as? [String] else { return [] }
+                            for version in versions {
+                                let versionNumber  : VersionNumber = VersionNumber.fromText(text: version)
+                                let featureVersion : Int           = versionNumber.feature!
+                                if featureVersion >= 8 {
+                                    if maxLtsVersions.keys.contains(featureVersion) {
+                                        if featureVersion == 8 {
+                                            if versionNumber.update! < 999 && versionNumber > maxLtsVersions[featureVersion]! { maxLtsVersions[featureVersion] = versionNumber }
+                                        } else {
+                                            if versionNumber > maxLtsVersions[featureVersion]! { maxLtsVersions[featureVersion] = versionNumber }
+                                        }
+                                    } else {
+                                        if featureVersion == 8 {
+                                            if versionNumber.update! < 999 { maxLtsVersions[featureVersion] = versionNumber }
+                                        } else {
+                                            maxLtsVersions[featureVersion] = versionNumber
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            ltsVersions += maxLtsVersions.values
+        } catch {
+            debugPrint("Error parsong json")
+        }
+        return ltsVersions
+    }
+    
     static func parseUpcomingReleasesJSONEntries(data: Data) -> [UpcomingReleases]? {
         var upcomingReleases     : [UpcomingReleases]    = []
         let upcomingReleasesData : UpcomingReleasesData = try! JSONDecoder().decode(UpcomingReleasesData.self, from: data)

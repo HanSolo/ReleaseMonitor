@@ -17,23 +17,36 @@ public class ReleaseModel {
         return instance
     }()
     
-    var networkMonitor      : NetworkMonitor         = NetworkMonitor.shared
-    var discoApiAvailable   : Bool                   = true
-    var lastRelease         : Int                    = Helper.calcLastRelease().0.feature ?? 0
-    var nextRelease         : Int                    = Helper.calcNextRelease().0.feature ?? 0
-    var upcomingReleases    : [UpcomingReleases]     = []
-    var distributions       : [Distribution]         = []
-    var latestOnMarketPlace : [String:VersionNumber] = ["Temurin"    : VersionNumber(feature: 1),
-                                                        "Dragonwell" : VersionNumber(feature: 1),
-                                                        "Zulu"       : VersionNumber(feature: 1),
-                                                        "Semeru"     : VersionNumber(feature: 1),
-                                                        "Microsoft"  : VersionNumber(feature: 1),
-                                                        "RedHat"     : VersionNumber(feature: 1)]
+    var networkMonitor      : NetworkMonitor                 = NetworkMonitor.shared
+    var discoApiAvailable   : Bool                           = true
+    var lastRelease         : Int                            = Helper.calcLastRelease().0.feature ?? 0
+    var nextRelease         : Int                            = Helper.calcNextRelease().0.feature ?? 0
+    var upcomingReleases    : [UpcomingReleases]             = []
+    var distributions       : [Distribution]                 = [] {
+        didSet {
+            Task {
+                for distribution in self.distributions {
+                    let ltsReleases : [VersionNumber] = await RestController.fetchLTSVersionsForDistribution(distribution: distribution)
+                    self.ltsReleases[distribution] = ltsReleases
+                }
+            }
+        }
+    }
+    var ltsReleases         : [Distribution:[VersionNumber]] = [:]
+    var latestOnMarketPlace : [String:VersionNumber]         = ["Temurin"    : VersionNumber(feature: 1),
+                                                                "Dragonwell" : VersionNumber(feature: 1),
+                                                                "Zulu"       : VersionNumber(feature: 1),
+                                                                "Semeru"     : VersionNumber(feature: 1),
+                                                                "Microsoft"  : VersionNumber(feature: 1),
+                                                                "RedHat"     : VersionNumber(feature: 1)]
     
     private init() {
         Timer.scheduledTimer(withTimeInterval: Constants.UPDATE_CHECK_INTERVAL, repeats: true) { timer in
             Task {
-                self.discoApiAvailable = await RestController.checkApiAvailability()
+                let available = await RestController.checkApiAvailability()
+                await MainActor.run {
+                    self.discoApiAvailable = available
+                }
             }
             
             let now        : Double = Date.init().timeIntervalSince1970

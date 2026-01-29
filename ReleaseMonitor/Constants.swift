@@ -11,59 +11,62 @@ import SwiftUI
 
 public struct Constants {
     
-    public static let APP_GROUP_ID                : String                 = "group.eu.hansolo.ReleaseMonitor"
+    public static let APP_GROUP_ID                        : String          = "group.eu.hansolo.ReleaseMonitor"
     
-    public static let SECONDS_PER_DAY             : Double                 = 86_400
-    public static let REQUEST_TIMEOUT             : Double                 = 60.0
-    public static let RESOURCE_TIMEOUT            : Double                 = 120.0
+    public static let SECONDS_PER_DAY                     : Double          = 86_400
+    public static let REQUEST_TIMEOUT                     : Double          = 60.0
+    public static let RESOURCE_TIMEOUT                    : Double          = 120.0
     
-    public static let UPDATE_CHECK_INTERVAL       : Double                 = 300    // every  5 minutes
-    public static let UPDATE_INTERVAL             : Double                 = 3_600  // every  1 hour
+    public static let UPDATE_CHECK_INTERVAL               : Double          = 300    // every  5 minutes
+    public static let UPDATE_INTERVAL                     : Double          = 3_600  // every  1 hour
     
     
-    public static let DISCO_API_BASE_URL          : String                 = "https://api.foojay.io/disco/v3.0/"
-    public static let DISCO_UPCOMING_RELEASES_URL : String                 = "\(DISCO_API_BASE_URL)upcoming_releases"
-    public static let DISCO_LATEST_VERSION_URL    : String                 = "\(DISCO_API_BASE_URL)distributions/versions/latest?distribution=bisheng,corretto,dragonwell,graalvm,graalvm_community,liberica,liberica_native,microsoft,openlogic,oracle_open_jdk,oracle,sap_machine,semeru,temurin,zulu&include_ea=true"
-    public static let MARKETPLACE_LATEST_API_URL  : String                 = "https://marketplace-api.adoptium.net/v1/assets/latestForVendors?vendor="
-    public static let DISCO_API_STATE_URL         : String                 = "\(DISCO_API_BASE_URL)state"
-    public static let AZUL_BLUE                   : Color                  = Color.init(hex: "#152241")
-    public static let AZUL_LIGHTER_BLUE           : Color                  = Color.init(hex: "#3E8FBB")
-    public static let AZUL_LIGHT_BLUE             : Color                  = Color.init(hex: "#A9D9EF")
-    public static let AZUL_PINK                   : Color                  = Color.init(hex: "#FF2B60")
-    public static let DF                          : DateFormatter          = {
+    public static let DISCO_API_BASE_URL                  : String          = "https://api.foojay.io/disco/v3.0/"
+    public static let DISCO_UPCOMING_RELEASES_URL         : String          = "\(DISCO_API_BASE_URL)upcoming_releases"
+    public static let DISCO_LATEST_VERSION_URL            : String          = "\(DISCO_API_BASE_URL)distributions/versions/latest?distribution=bisheng,corretto,dragonwell,graalvm,graalvm_community,liberica,liberica_native,microsoft,openlogic,oracle_open_jdk,oracle,sap_machine,semeru,temurin,zulu&include_ea=true"
+    public static let DISCO_MAINTAINED_MAJOR_VERSIONS_URL : String          = "\(DISCO_API_BASE_URL)major_versions?ga=true&include_build=false&include_versions=false&maintained=true"
+    public static let DISCO_LTS_VERSIONS_PER_DISTRO_1     : String          = "\(DISCO_API_BASE_URL)distributions/"
+    public static let DISCO_LTS_VERSIONS_PER_DISTRO_2     : String          = "?include_synonyms=false&include_versions=true&latest_per_update=true&include_ea=false&term_of_support=lts"
+    public static let MARKETPLACE_LATEST_API_URL          : String          = "https://marketplace-api.adoptium.net/v1/assets/latestForVendors?vendor="
+    public static let DISCO_API_STATE_URL                 : String          = "\(DISCO_API_BASE_URL)state"
+    public static let AZUL_BLUE                           : Color           = Color.init(hex: "#152241")
+    public static let AZUL_LIGHTER_BLUE                   : Color           = Color.init(hex: "#3E8FBB")
+    public static let AZUL_LIGHT_BLUE                     : Color           = Color.init(hex: "#A9D9EF")
+    public static let AZUL_PINK                           : Color           = Color.init(hex: "#FF2B60")
+    public static let DF                                  : DateFormatter   = {
         let formatter : DateFormatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         formatter.dateStyle  = .short
         formatter.timeZone   = .autoupdatingCurrent
         return formatter
     }()
-    public static let DF_ISO                      : DateFormatter          = {
+    public static let DF_ISO                              : DateFormatter   = {
         let formatter : DateFormatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.dateStyle  = .short
         formatter.timeZone   = .autoupdatingCurrent
         return formatter
     }()
-    public static let INITIAL_DATE_TIME           : Date                   = Date.now
-    public static let MARKETPLACE_VENDORS         : [String:String]        = ["adoptium"  : "Temurin",
-                                                                              "alibaba"   : "Dragonwell",
-                                                                              "azul"      : "Zulu",
-                                                                              "ibm"       : "Semeru",
-                                                                              "microsoft" : "Microsoft",
-                                                                              "redhat"    : "RedHat"]
-    public static let VENDOR_NAMES                : [String]               = ["Dragonwell", "Microsoft", "RedHat", "Semeru", "Temurin", "Zulu"]
-    public static var UPDATES                     : [String:Update]        = ["corretto"          : Update.init(distribution: Distribution(uiString: "Corretto",     apiString: "coretto",           latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "graalvm_community" : Update.init(distribution: Distribution(uiString: "GraalVM CE",   apiString: "graalvm_community", latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "liberica"          : Update.init(distribution: Distribution(uiString: "Liberica",     apiString: "liberica",          latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "liberica_native"   : Update.init(distribution: Distribution(uiString: "Liberica NIK", apiString: "liberica_native",   latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "microsoft"         : Update.init(distribution: Distribution(uiString: "Microsoft",    apiString: "microsoft",         latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "oracle_open_jdk"   : Update.init(distribution: Distribution(uiString: "OpenJDK",      apiString: "oracle_open_jdk",   latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "sap_machine"       : Update.init(distribution: Distribution(uiString: "SAP Machine",  apiString: "sap_machine",       latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "semeru"            : Update.init(distribution: Distribution(uiString: "Semeru",       apiString: "semeru",            latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "temurin"           : Update.init(distribution: Distribution(uiString: "Temurin",      apiString: "temurin",           latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
-                                                                              "zulu"              : Update.init(distribution: Distribution(uiString: "Zulu",         apiString: "graalvm_community", latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME)]
-    public static let JDK_23_RELEASE_DATE         : Date                   = Helper.createDate(year: 2024, month: 9, day: 17)!
-    public static let JDK_24_RELEASE_DATE         : Date                   = Helper.createDate(year: 2025, month: 3, day: 18)!
+    public static let INITIAL_DATE_TIME                   : Date            = Date.now
+    public static let MARKETPLACE_VENDORS                 : [String:String] = ["adoptium"  : "Temurin",
+                                                                               "alibaba"   : "Dragonwell",
+                                                                               "azul"      : "Zulu",
+                                                                               "ibm"       : "Semeru",
+                                                                               "microsoft" : "Microsoft",
+                                                                               "redhat"    : "RedHat"]
+    public static let VENDOR_NAMES                        : [String]        = ["Dragonwell", "Microsoft", "RedHat", "Semeru", "Temurin", "Zulu"]
+    public static var UPDATES                             : [String:Update] = ["corretto"         : Update.init(distribution: Distribution(uiString: "Corretto",     apiString: "coretto",           latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "graalvm_community" : Update.init(distribution: Distribution(uiString: "GraalVM CE",   apiString: "graalvm_community", latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "liberica"          : Update.init(distribution: Distribution(uiString: "Liberica",     apiString: "liberica",          latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "liberica_native"   : Update.init(distribution: Distribution(uiString: "Liberica NIK", apiString: "liberica_native",   latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "microsoft"         : Update.init(distribution: Distribution(uiString: "Microsoft",    apiString: "microsoft",         latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "oracle_open_jdk"   : Update.init(distribution: Distribution(uiString: "OpenJDK",      apiString: "oracle_open_jdk",   latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "sap_machine"       : Update.init(distribution: Distribution(uiString: "SAP Machine",  apiString: "sap_machine",       latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "semeru"            : Update.init(distribution: Distribution(uiString: "Semeru",       apiString: "semeru",            latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "temurin"           : Update.init(distribution: Distribution(uiString: "Temurin",      apiString: "temurin",           latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME),
+                                                                               "zulu"              : Update.init(distribution: Distribution(uiString: "Zulu",         apiString: "graalvm_community", latestGA: nil, latestEA: nil), lastUpdateLatestGA: INITIAL_DATE_TIME, lastUpdateLatestEA: INITIAL_DATE_TIME)]
+    public static let JDK_23_RELEASE_DATE                 : Date            = Helper.createDate(year: 2024, month: 9, day: 17)!
+    public static let JDK_24_RELEASE_DATE                 : Date            = Helper.createDate(year: 2025, month: 3, day: 18)!
     
     
     // -------------------- ENUMS --------------------

@@ -14,7 +14,7 @@ class DistributionData: Codable {
 
     
     private enum CodingKeys: String, CodingKey {
-        case result = "result"
+        case result  = "result"
         case message = "message"
     }
 

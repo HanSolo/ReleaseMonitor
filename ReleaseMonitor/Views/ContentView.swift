@@ -30,6 +30,16 @@ struct ContentView: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .background(Constants.AZUL_BLUE)
+        .task {            
+            /*
+            self.model.ltsReleases.forEach { key, value in
+                debugPrint(key.uiString)
+                for version in value {
+                    debugPrint(version.toString(outputFormat: .reduced_compressed, javaFormat: true, includeReleaseStatusAndBuild: false))
+                }
+            }
+            */
+        }
     }
 }
 

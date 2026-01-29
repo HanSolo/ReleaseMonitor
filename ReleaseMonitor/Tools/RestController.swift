@@ -133,4 +133,58 @@ class RestController {
         }
         return nil
     }
+    
+    public static func fetchMaintainedMajorVersions() async -> [MajorVersion] {
+        let sessionConfig : URLSessionConfiguration = URLSessionConfiguration.default
+        sessionConfig.timeoutIntervalForRequest  = Constants.REQUEST_TIMEOUT
+        sessionConfig.timeoutIntervalForResource = Constants.RESOURCE_TIMEOUT
+        
+        let urlString : String      = Constants.DISCO_MAINTAINED_MAJOR_VERSIONS_URL
+        let session   : URLSession  = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
+        let finalUrl  : URL         = URL(string: urlString)!
+        var request   : URLRequest  = URLRequest(url: finalUrl)
+        request.httpMethod = "GET"
+        var maintainedMajorVersions : [MajorVersion] = []
+        do {
+            let data = try await session.data(with: request)
+            let maintainedMajorVersionsFromDisco : [MajorVersion]? = Helper.parseMajorVersionJSONEntries(data: data)
+            if nil == maintainedMajorVersionsFromDisco {
+                os_log("fetchMaintainedMajorVersions -> maintainedMajorVersionsFromDisco == nil", log: LOG, type: .error)
+            } else if maintainedMajorVersionsFromDisco?.isEmpty ?? true {
+                os_log("fetchMaintainedMajorVersions -> maintainedMajorVersionsFromDisco == empty", log: LOG, type: .error)
+            } else {
+                maintainedMajorVersions = maintainedMajorVersionsFromDisco!
+            }
+        } catch {
+            os_log("Error fetching maintainedMajorVersions", log: LOG, type: .error)
+        }
+        return maintainedMajorVersions
+    }
+    
+    public static func fetchLTSVersionsForDistribution(distribution: Distribution) async -> [VersionNumber] {
+        let sessionConfig : URLSessionConfiguration = URLSessionConfiguration.default
+        sessionConfig.timeoutIntervalForRequest  = Constants.REQUEST_TIMEOUT
+        sessionConfig.timeoutIntervalForResource = Constants.RESOURCE_TIMEOUT
+        
+        let urlString : String      = "\(Constants.DISCO_LTS_VERSIONS_PER_DISTRO_1)\(distribution.apiString)\(Constants.DISCO_LTS_VERSIONS_PER_DISTRO_2)"
+        let session   : URLSession  = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
+        let finalUrl  : URL         = URL(string: urlString)!
+        var request   : URLRequest  = URLRequest(url: finalUrl)
+        request.httpMethod = "GET"
+        var ltsVersions : [VersionNumber] = []
+        do {
+            let data = try await session.data(with: request)
+            let ltsVersionsFromDisco : [VersionNumber]? = Helper.parseLTSVersionJSONEntries(data: data)
+            if nil == ltsVersionsFromDisco {
+                os_log("ltsVersionsFromDisco -> fetchLTSVersionsFromDisco == nil", log: LOG, type: .error)
+            } else if ltsVersionsFromDisco?.isEmpty ?? true {
+                os_log("ltsVersionsFromDisco -> fetchLTSVersionsFromDisco == empty", log: LOG, type: .error)
+            } else {
+                ltsVersions = ltsVersionsFromDisco!
+            }
+        } catch {
+            os_log("Error fetching lts versions", log: LOG, type: .error)
+        }
+        return ltsVersions
+    }
 }

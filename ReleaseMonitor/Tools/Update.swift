@@ -33,5 +33,4 @@ public class Update {
                now.month == self.lastUpdateLatestEA.month &&
                now.year  == self.lastUpdateLatestEA.year
     }
-    
 }
