@@ -494,4 +494,14 @@ public struct Helper {
         if featureVersion < 17 { return ((Double(featureVersion) - 11.0) / 6.0).truncatingRemainder(dividingBy: 1) == 0 }
         return ((Double(featureVersion) - 17.0) / 4.0).truncatingRemainder(dividingBy: 1) == 0
     }
+    
+    public static func getLtsForDistro(distribution: Distribution, ltsRelease: Int, ltsReleases : [Distribution:[VersionNumber]]) -> String {
+        if ltsReleases.keys.contains(distribution) {
+            let versions : [VersionNumber] = ltsReleases[distribution]!
+            if versions.contains(where: { $0.feature == ltsRelease }) {
+                return versions.first(where: { $0.feature == ltsRelease })!.toString(outputFormat: .reduced_compressed, javaFormat: true, includeReleaseStatusAndBuild: false)
+            }
+        }
+        return "-"
+    }
 }

@@ -22,6 +22,11 @@ struct ContentView: View {
                     DiscoView()
                 }
                 .disabled(!self.model.discoApiAvailable)
+                
+                Tab {
+                    LtsView()
+                }
+                .disabled(self.model.discoApiAvailable)
                  
                 Tab {
                     MarketPlaceView()

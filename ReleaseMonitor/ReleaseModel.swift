@@ -28,11 +28,19 @@ public class ReleaseModel {
                 for distribution in self.distributions {
                     let ltsReleases : [VersionNumber] = await RestController.fetchLTSVersionsForDistribution(distribution: distribution)
                     self.ltsReleases[distribution] = ltsReleases
+                    if distribution.apiString == "zulu", !ltsReleases.isEmpty {
+                        for ltsRelease in ltsReleases {
+                            if self.ltsReleasesAsInt.contains(ltsRelease.feature!) { continue }
+                            self.ltsReleasesAsInt.append(ltsRelease.feature!)
+                        }
+                    }
                 }
             }
         }
     }
     var ltsReleases         : [Distribution:[VersionNumber]] = [:]
+    var ltsReleasesAsInt    : [Int]                          = []
+    var selectedLtsRelease  : Int                            = 25
     var latestOnMarketPlace : [String:VersionNumber]         = ["Temurin"    : VersionNumber(feature: 1),
                                                                 "Dragonwell" : VersionNumber(feature: 1),
                                                                 "Zulu"       : VersionNumber(feature: 1),
