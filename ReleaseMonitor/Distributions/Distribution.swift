@@ -39,6 +39,7 @@ public class Distribution : Codable, Hashable, Equatable {
             case "liberica_native"  : self.uiString = "Liberica NIK"
             case "graalvm_community": self.uiString = "GraalVM CE"
             case "oracle_open_jdk"  : self.uiString = "OpenJDK"
+            case "semeru_certified" : self.uiString = "Semeru Cert."
             default                 : self.uiString = try! container.decode(String.self, forKey: .uiString)
         }
         latestGA  = try? VersionNumber.fromText(text: container.decode(String.self, forKey: .latestGa))
